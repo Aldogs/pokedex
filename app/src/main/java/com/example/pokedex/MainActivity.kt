@@ -16,9 +16,11 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.example.pokedex.ui.details.DetailsScreen
 import com.example.pokedex.ui.list.ListScreen
 import com.example.pokedex.ui.theme.PokedexTheme
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.Locale
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -35,17 +37,20 @@ class MainActivity : ComponentActivity() {
                         ListScreen(navController = navController)
                     }
                     composable(
-                        "details_screen/{pokemonName}",
+                        "details_screen/{name}",
                         arguments = listOf(
-                            navArgument("pokemonName") {
+                            navArgument("name") {
                                 type = NavType.StringType
                             }
                         )
-
                     ) {
-                        val pokemonName = remember {
-                            it.arguments?.getString("pokemonName")
+                        val name = remember {
+                            it.arguments?.getString("name")
                         }
+                        DetailsScreen(
+                            name = name?.lowercase(Locale.ROOT) ?: "",
+                            navController = navController
+                        )
                     }
                 }
             }

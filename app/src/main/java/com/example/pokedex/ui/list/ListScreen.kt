@@ -2,8 +2,10 @@ package com.example.pokedex.ui.list
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -74,7 +76,7 @@ fun PokemonList(
             modifier = Modifier.padding(padding)
         ) {
             items(pokemonList.size) {
-                if (it >= pokemonList.size - 1 && !lastPage) {
+                if (it >= pokemonList.size - 1 && !lastPage && !isLoading) {
                     viewModel.loadNewPokemons()
                 }
                 PokemonEntry(entry = pokemonList[it], navController = navController)
@@ -93,36 +95,46 @@ fun PokemonEntry(
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
-            .padding(8.dp)
+            .padding(16.dp)
             .clickable {
                 navController.navigate(
                     "details_screen/${entry.name}"
                 )
             }
     ) {
-        Text(
-            "#${entry.pokedexNumber}",
-            style = MaterialTheme.typography.h6,
-            fontWeight = FontWeight.Light,
-            modifier = Modifier.padding(4.dp)
-        )
+        Box(modifier = Modifier.size(70.dp, 34.dp)) {
+            Text(
+                "#${entry.pokedexNumber}",
+                style = MaterialTheme.typography.h6,
+                fontWeight = FontWeight.Light,
+                modifier = Modifier.padding(4.dp)
+            )
+        }
         Text(
             entry.name.replaceFirstChar {
                 it.uppercase()
             },
             style = MaterialTheme.typography.h5,
-            fontWeight = FontWeight.Medium
+            fontWeight = FontWeight.Medium,
+            modifier = Modifier
+                .padding(horizontal = 10.dp)
         )
+
+        Spacer(
+            Modifier
+                .weight(1f)
+                .fillMaxWidth()
+                .background(Color.Green))
         AsyncImage(
             model = entry.imageUrl,
-            "Pokémon image",
+            "Image off pokemon",
             modifier = Modifier
+                .padding(end = 15.dp)
                 .size(60.dp)
                 .clip(CircleShape)
                 .background(Color.Gray.copy(alpha = 0.1f))
-                .padding(8.dp)
+
         )
-        Spacer(modifier = Modifier.fillMaxWidth())
     }
 
 }
