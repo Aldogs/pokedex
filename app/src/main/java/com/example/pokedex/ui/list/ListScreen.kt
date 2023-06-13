@@ -69,6 +69,7 @@ fun PokemonList(
             )
         }
     ) { padding ->
+        viewModel.loadNewPokemons()
         LazyColumn(
             modifier = Modifier.padding(padding)
         ) {

@@ -29,6 +29,7 @@ class PokemonListViewModel @Inject constructor(
         viewModelScope.launch {
             isLoading.value = true
             val result = repository.getPokemonList(20, currentIteration *  20)
+
             when (result) {
                 is Resource.Error -> {
                     errorLoading.value = result.toString()
